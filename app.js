@@ -2,11 +2,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const dbo = require('./database/connection');
+const dbo = require('./src/config/db-connection');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var moviesRouter = require('./routes/movies');
+var indexRouter = require('./src/routes/index');
+var moviesRouter = require('./src/routes/movies.route');
 
 var app = express();
 
@@ -16,7 +15,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/movies', moviesRouter);
 
 dbo.connectToServer(function (err) {
@@ -24,7 +22,7 @@ dbo.connectToServer(function (err) {
     console.error(err);
     process.exit();
   }
-  console.log("connected")
+  console.log('Connected to the database');
 })
 
 module.exports = app;
